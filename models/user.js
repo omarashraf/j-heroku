@@ -14,9 +14,14 @@ const userSchema = mongoose.Schema({
   email: {
       type: String,
       required: true,
+      unique: true,
       lowercase: true,
       trim: true,
-      validate: [validateEmail, 'Please fill a valid email address']
+      validate: {
+        validator: function(v) {
+            return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(v);
+        }
+      }
   },
   phone: {
       type: String,
@@ -38,11 +43,6 @@ function validateUser(user) {
     }
     return Joi.validate(user, schmea)
 }
-
-var validateEmail = function(email) {
-    var re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-    return re.test(email)
-};
 
 const User = mongoose.model('User', userSchema);
 
