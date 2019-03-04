@@ -7,7 +7,7 @@ var userCtrl = require('../controllers/user');
 // router.route('').get(userCtrl.getAllUsers);
 
 // get a specific user
-// router.route('/:id').get();
+router.route('/:id?').get(userCtrl.getUser);
 
 // insert a new user
 router.route('').post(userCtrl.insertUser);

@@ -1,6 +1,18 @@
 const mongoose = require('mongoose');
 const Joi = require('joi');
 
+
+const orderDetailsSchema = mongoose.Schema({
+    quantity: {
+        type: Number,
+        required: true
+    },
+    product: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Product'
+    }
+});
+
 const orderSchema = mongoose.Schema({
     date: {
         type: Date,
@@ -20,19 +32,8 @@ const orderSchema = mongoose.Schema({
         required: true
     },
     customer: {
-        type: Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
-    }
-});
-
-const orderDetailsSchema = mongoose.Schema({
-    quantity: {
-        type: Number,
-        required: true
-    },
-    product: {
-        type: Schema.Types.ObjectId,
-        ref: 'Product'
     }
 });
 
@@ -60,4 +61,4 @@ function validateOrderDetails(orderDetails) {
 const Order = mongoose.model('Order', orderSchema);
 
 exports.Order = Order;
-exports.validateOrder = validateOrder;
+exports.validate = validateOrder;
