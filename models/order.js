@@ -7,7 +7,7 @@ const orderDetailsSchema = mongoose.Schema({
         type: Number,
         required: true
     },
-    product: {
+    productId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Product'
     }
@@ -21,7 +21,8 @@ const orderSchema = mongoose.Schema({
     status: {
         type: String,
         required: true,
-        enum: ['done', 'pending']
+        enum: ['done', 'pending'],
+        default: 'pending'
     },
     price: {
         type: Number,
@@ -31,7 +32,7 @@ const orderSchema = mongoose.Schema({
         type: [orderDetailsSchema],
         required: true
     },
-    customer: {
+    customerId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     }
@@ -39,18 +40,18 @@ const orderSchema = mongoose.Schema({
 
 function validateOrder(order) {
     const schema = {
-        name: Joi.string().required().valid('done', 'pending'),
-        price: Joi.number().required(),
         orderDetails: Joi.required(),
-        customer: Joi.required()
+        customerId: Joi.string(),
+        user: Joi.object()
     }
-    return Joi.validate(order, schema) && validateOrderDetails(order.orderDetails);
+    // return Joi.validate(order, schema) && validateOrderDetails(order.orderDetails);
+    return Joi.validate(order, schema);
 }
 
 function validateOrderDetails(orderDetails) {
     let orderDetailSchema = Joi.object.keys({
         quantity: Joi.number().required(),
-        product: Joi.required()
+        productId: Joi.required()
     });
 
     let orderDetailsSchema = Joi.array().items(orderDetailSchema);
@@ -61,4 +62,4 @@ function validateOrderDetails(orderDetails) {
 const Order = mongoose.model('Order', orderSchema);
 
 exports.Order = Order;
-exports.validate = validateOrder;
+exports.validateOrder = validateOrder;

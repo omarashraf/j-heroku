@@ -13,13 +13,18 @@ const productSchema = mongoose.Schema({
     image: {
         data: Buffer,
         contentType: String
+    },
+    price: {
+        type: Number,
+        required: true
     }
 });
 
 function validateProduct(product) {
     const schmea = {
         name: Joi.string(),
-        code: Joi.string().required()
+        code: Joi.string().required(),
+        price: Joi.number().required()
         // image: Joi.string().required(),
     }
     return Joi.validate(product, schmea)
@@ -28,4 +33,4 @@ function validateProduct(product) {
 const Product = mongoose.model('Product', productSchema);
 
 exports.Product = Product;
-exports.validate = validateProduct;
+exports.validateProduct = validateProduct;

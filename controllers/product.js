@@ -1,22 +1,28 @@
-var { Product, validate } = require('../models/product');
+var { Product, validateProduct } = require('../models/product');
 
 async function insertProduct(req, res) {
-    const { error } = validate(req.body);
+    const { error } = validateProduct(req.body);
     if (error) {
         return res.status(400).send(error['details'][0]['message']);
     }
 
     let product = await Product.findOne({ code: req.body.code });
     if (product) {
-        return res.status(409).send('Product already exists')
+        return res.status(409).send({
+            msg: 'product code already exists'
+        });
     } else {
         // insert product in db
         product = new Product({
             name: req.body.name,
-            code: req.body.code
+            code: req.body.code,
+            price: req.body.price
         });
         await product.save();
-        return res.status(200).send(product);
+        return res.status(200).send({
+            msg: 'product inserted successfully',
+            product
+        });
     }
 }
 

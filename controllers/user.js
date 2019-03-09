@@ -8,7 +8,10 @@ async function insertUser(req, res) {
 
     let user = await User.findOne({ $or: [{instagramUsername: req.body.instagramUsername}, {email: req.body.email}] });
     if (user) {
-        return res.status(409).send(user);
+        return res.status(409).send({
+            msg: "user already exists",
+            user
+        });
     } else {
         // insert user in db
         user = new User({
@@ -19,7 +22,10 @@ async function insertUser(req, res) {
             address: req.body.address
         });
         await user.save();
-        return res.status(200).send(user);
+        return res.status(200).send({
+            msg: "user inserted successfully",
+            user
+        });
     }
 }
 
