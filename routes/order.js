@@ -4,10 +4,10 @@ const router = express.Router();
 var orderCtrl = require('../controllers/order');
 
 // get all orders
-// router.route('').get(orderCtrl.getAllOrders);
+router.route('').get(orderCtrl.getAllOrders);
 
 // get a specific order
-// router.route('/:id').get();
+router.route('/:id').get(orderCtrl.getOrderById);
 
 // insert a new order
 router.route('').post(orderCtrl.insertOrder);

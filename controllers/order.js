@@ -1,13 +1,44 @@
 const { Order, validateOrder } = require('../models/order');
 const { User, validateUser } = require('../models/user');
-const { Product, validateProduct } = require('../models/product');
+const { Product } = require('../models/product');
 
 const mongoose = require('mongoose');
 
-const userCtrl = require('./user');
+async function getAllOrders(req, res) {
+    let orders = await Order.find();
+    if (orders && orders.length > 0) {
+        res.status(200).send({
+            msg: 'orders fetched successfully',
+            orders
+        });
+    } else {
+        res.status(200).send({
+            msg: 'there are no orders to be fetched',
+            orders
+        });
+    }
+}
 
-function getAllOrders() {
-
+function getOrderById(req, res) {
+    let orderId = req.params.id;
+    if (orderId) {
+        Order.findOne({ _id: orderId }, function(err, order) {
+            if (!err) {
+                res.status(200).send({
+                    msg: 'order fetched by supplied id',
+                    order
+                });
+            } else {
+                res.status(404).send({
+                    msg: 'no such order with the supplied id'
+                });
+            }
+        });
+    } else {
+        res.status(400).send({
+            msg: 'no order id is supplied'
+        });
+    }
 }
 
 async function insertOrder(req, res) {
@@ -109,5 +140,6 @@ async function getProductsIdsAndPrice(orderDetails) {
 
 module.exports = {
     getAllOrders,
+    getOrderById,
     insertOrder
 }

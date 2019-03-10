@@ -34,12 +34,19 @@ async function getUser(req, res) {
     if (userId) {
         let user = await User.findOne({ instagramUsername: userId });
         if (user) {
-            res.status(200).send(user._id);
+            res.status(200).send({
+                msg: 'user id fetched successfully',
+                userId: user._id
+            });
         } else {
-            res.status(404).send('User not found');
+            res.status(404).send({
+                msg: 'user not found'
+            });
         }
     } else {
-        res.status(400).send('No user id is supplied');
+        res.status(400).send({
+            msg: 'no user id is supplied'
+        });
     }
 }
 
