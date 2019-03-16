@@ -138,8 +138,64 @@ async function getProductsIdsAndPrice(orderDetails) {
     }
 }
 
+function deleteOrder(req, res) {
+    let orderId = req.params.id;
+    if (orderId) {
+        Order.findByIdAndRemove(orderId, function(err) {
+            if (err) {
+                res.status(500).send({
+                    msg: err.message
+                });
+            } else {
+                res.status(200).send({
+                    msg: 'order deleted successfully'
+                })
+            }
+        })
+    } else {
+        res.status(400).send({
+            msg: 'no order id is supplied'
+        });
+    }
+}
+
+async function editOrder(req, res) {
+    const { error } = validateOrder(req.body);
+    if (error) {
+        return res.status(400).send(error['details'][0]['message']);
+    }
+
+    let newOrder;
+    let productDetails = await getProductsIdsAndPrice(req.body.orderDetails);
+    if (productDetails.resolved) {
+        let price = productDetails.price;
+
+        newOrder = req.body;
+        newOrder['price'] = price;
+    } else {
+        return res.status(400).send({
+            msg: 'product details were not set properly'
+        });
+    }
+
+    Order.findOneAndUpdate({ _id: req.body.orderId }, newOrder, { new: true }, function(err, order) {
+        if (!err) {
+            res.status(200).send({
+                msg: 'order updated successfully',
+                order
+            })
+        } else {
+            res.status(404).send({
+                msg: 'no such order with the supplied id'
+            });
+        }
+    });
+}
+
 module.exports = {
     getAllOrders,
     getOrderById,
-    insertOrder
+    insertOrder,
+    deleteOrder,
+    editOrder
 }

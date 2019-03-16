@@ -13,9 +13,9 @@ router.route('/:id').get(orderCtrl.getOrderById);
 router.route('').post(orderCtrl.insertOrder);
 
 // delete an existing order
-// router.route('').delete();
+router.route('/:id').delete(orderCtrl.deleteOrder);
 
 // edit an exisitng order
-// router.route('').patch();
+router.route('').patch(orderCtrl.editOrder);
 
 module.exports = router;

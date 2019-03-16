@@ -42,7 +42,9 @@ function validateOrder(order) {
     const schema = {
         orderDetails: Joi.required(),
         customerId: Joi.string(),
-        user: Joi.object()
+        user: Joi.object(),
+        status: Joi.string().valid('pending', 'done'),
+        orderId: Joi.string()
     }
     // return Joi.validate(order, schema) && validateOrderDetails(order.orderDetails);
     return Joi.validate(order, schema);
