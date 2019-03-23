@@ -2,6 +2,10 @@ const express = require('express');
 const router = express.Router();
 
 var orderCtrl = require('../controllers/order');
+var utils = require('../utils/helper_functions');
+
+// middleware for authentication
+router.use(utils.authenticateToken);
 
 // get all orders
 router.route('').get(orderCtrl.getAllOrders);

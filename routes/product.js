@@ -3,6 +3,11 @@ const router = express.Router();
 
 var productCtrl = require('../controllers/product');
 
+var utils = require('../utils/helper_functions');
+
+// middleware for authentication
+router.use(utils.authenticateToken);
+
 // get all products
 // router.route('').get(productCtrl.getAllProducts);
 

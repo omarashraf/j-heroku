@@ -3,6 +3,11 @@ const router = express.Router();
 
 var userCtrl = require('../controllers/user');
 
+var utils = require('../utils/helper_functions');
+
+// middleware for authentication
+router.use(utils.authenticateToken);
+
 // get all users
 // router.route('').get(userCtrl.getAllUsers);
 
