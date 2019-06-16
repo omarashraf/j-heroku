@@ -17,13 +17,17 @@ async function authAdmin(req, res) {
     //  find the admin by username
     let admin = await Admin.findOne({ username: req.body.username });
     if (!admin) {
-        return res.status(400).send('Incorrect username.');
+        return res.status(400).send({
+            msg: 'Incorrect username'
+        });
     }
  
     // validate credentials by comparing hashes of passwords
     const validPassword = await bcrypt.compare(req.body.password, admin.password);
     if (!validPassword) {
-        return res.status(400).send('Incorrect password.');
+        return res.status(400).send({
+            msg: 'Incorrect password'
+        });
     }
  
     const token = jwt.sign({ _id: admin._id }, env.parsed['PRIVATE_KEY'], {

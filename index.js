@@ -2,6 +2,8 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const dotenv = require('dotenv');
+const env = dotenv.config();
 
 const dbConfig = require('./db/config');
 
@@ -20,6 +22,6 @@ app.use('/order', orderRoutes);
 app.use('/product', productRoutes);
 app.use('/user', userRoutes);
 
-app.listen(3000, function () {
-    console.log('Example app listening on port 3000!');
+app.listen(env.parsed['PORT'], function () {
+    console.log(`Example app listening on port ${env.parsed['PORT']}!`);
 });
