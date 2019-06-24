@@ -36,7 +36,11 @@ async function getUser(req, res) {
         if (user) {
             res.status(200).send({
                 msg: 'user id fetched successfully',
-                userId: user._id
+                userId: user._id,
+                email: user.email,
+                name: user.name,
+                address: user.address,
+                phone: user.phone
             });
         } else {
             res.status(404).send({

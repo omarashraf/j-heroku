@@ -8,7 +8,7 @@ const orderDetailsSchema = mongoose.Schema({
         required: true
     },
     productId: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: String,
         ref: 'Product'
     }
 });
@@ -33,7 +33,7 @@ const orderSchema = mongoose.Schema({
         required: true
     },
     customerId: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: String,
         ref: 'User'
     }
 });

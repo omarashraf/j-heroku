@@ -71,7 +71,7 @@ async function insertOrder(req, res) {
                 address: user.address
             });
             await userToInsert.save(function(err, user) {
-                userId = user._id;
+                userId = user.instagramUsername;
             });
         }
     } else {
@@ -91,7 +91,7 @@ async function insertOrder(req, res) {
 
         let order = new Order({
             price,
-            customerId: mongoose.Types.ObjectId(userId),
+            customerId: userId,
             orderDetails
         });
 
@@ -118,7 +118,7 @@ async function getProductsIdsAndPrice(orderDetails) {
         let orderDetail = orderDetails[i];
         let product = await Product.findOne({ code: orderDetail.code });
         if (product) {
-            newOrderDetails.push({ quantity: orderDetail.quantity, productId: mongoose.Types.ObjectId(product._id) });
+            newOrderDetails.push({ quantity: orderDetail.quantity, productId: orderDetail.code });
             price += orderDetail.quantity * product.price;
         } else {
             nonExistentCode = true;
