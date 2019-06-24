@@ -148,7 +148,8 @@ function deleteOrder(req, res) {
                 });
             } else {
                 res.status(200).send({
-                    msg: 'order deleted successfully'
+                    msg: 'order deleted successfully',
+                    orderId
                 })
             }
         })
