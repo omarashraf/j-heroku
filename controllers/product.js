@@ -1,5 +1,20 @@
 var { Product, validateProduct } = require('../models/product');
 
+async function getAllProducts(req, res) {
+    let products = await Product.find();
+    if (products && products.length > 0) {
+        res.status(200).send({
+            msg: 'products fetched successfully',
+            products
+        });
+    } else {
+        res.status(200).send({
+            msg: 'there are no products to be fetched',
+            products
+        });
+    }
+}
+
 async function insertProduct(req, res) {
     const { error } = validateProduct(req.body);
     if (error) {
@@ -27,5 +42,6 @@ async function insertProduct(req, res) {
 }
 
 module.exports = {
-    insertProduct
+    insertProduct,
+    getAllProducts
 }

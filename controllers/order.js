@@ -116,9 +116,9 @@ async function getProductsIdsAndPrice(orderDetails) {
 
     for (let i = 0; i < orderDetails.length; i++) {
         let orderDetail = orderDetails[i];
-        let product = await Product.findOne({ code: orderDetail.code });
+        let product = await Product.findOne({ code: orderDetail.productId });
         if (product) {
-            newOrderDetails.push({ quantity: orderDetail.quantity, productId: orderDetail.code });
+            newOrderDetails.push({ quantity: orderDetail.quantity, productId: orderDetail.productId });
             price += orderDetail.quantity * product.price;
         } else {
             nonExistentCode = true;

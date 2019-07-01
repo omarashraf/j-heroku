@@ -9,7 +9,7 @@ var utils = require('../utils/helper_functions');
 router.use(utils.authenticateToken);
 
 // get all products
-// router.route('').get(productCtrl.getAllProducts);
+router.route('').get(productCtrl.getAllProducts);
 
 // get a specific product
 // router.route('/:id').get();
