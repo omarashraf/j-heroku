@@ -54,7 +54,23 @@ async function getUser(req, res) {
     }
 }
 
+async function getAllUsers(req, res) {
+    let users = await User.find();
+    if (users && users.length > 0) {
+        res.status(200).send({
+            msg: 'users fetched successfully',
+            users
+        });
+    } else {
+        res.status(200).send({
+            msg: 'there are no users to be fetched',
+            users
+        });
+    }
+}
+
 module.exports = {
     insertUser,
-    getUser
+    getUser,
+    getAllUsers
 }

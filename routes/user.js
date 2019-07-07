@@ -9,7 +9,7 @@ var utils = require('../utils/helper_functions');
 router.use(utils.authenticateToken);
 
 // get all users
-// router.route('').get(userCtrl.getAllUsers);
+router.route('').get(userCtrl.getAllUsers);
 
 // get a specific user
 router.route('/:id?').get(userCtrl.getUser);
