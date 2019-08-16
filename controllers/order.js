@@ -46,7 +46,6 @@ async function insertOrder(req, res) {
     if (error) {
         return res.status(400).send(error['details'][0]['message']);
     }
-
     let userId;
     let user = req.body.user;
     if (user) {
@@ -116,9 +115,9 @@ async function getProductsIdsAndPrice(orderDetails) {
 
     for (let i = 0; i < orderDetails.length; i++) {
         let orderDetail = orderDetails[i];
-        let product = await Product.findOne({ code: orderDetail.productId });
+        let product = await Product.findOne({ code: orderDetail.code });
         if (product) {
-            newOrderDetails.push({ quantity: orderDetail.quantity, productId: orderDetail.productId });
+            newOrderDetails.push({ quantity: orderDetail.quantity, code: orderDetail.code });
             price += orderDetail.quantity * product.price;
         } else {
             nonExistentCode = true;

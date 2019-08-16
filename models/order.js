@@ -7,7 +7,7 @@ const orderDetailsSchema = mongoose.Schema({
         type: Number,
         required: true
     },
-    productId: {
+    code: {
         type: String,
         ref: 'Product'
     }
@@ -53,7 +53,7 @@ function validateOrder(order) {
 function validateOrderDetails(orderDetails) {
     let orderDetailSchema = Joi.object.keys({
         quantity: Joi.number().required(),
-        productId: Joi.required()
+        code: Joi.required()
     });
 
     let orderDetailsSchema = Joi.array().items(orderDetailSchema);
