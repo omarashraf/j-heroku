@@ -1,4 +1,4 @@
-var { Product, validateProduct } = require('../models/product');
+var { Product, validateProduct } = require('../models/product.model');
 
 async function getAllProducts(req, res) {
     let products = await Product.find();

@@ -22,6 +22,36 @@ function authenticateToken(req, res, next) {
     }
 }
 
+async function getProductsIdsAndPrice(orderDetails) {
+    let newOrderDetails = [];
+    let nonExistentCode = false;
+    let price = 0;
+
+    for (let i = 0; i < orderDetails.length; i++) {
+        let orderDetail = orderDetails[i];
+        let product = await Product.findOne({ code: orderDetail.code });
+        if (product) {
+            newOrderDetails.push({ quantity: orderDetail.quantity, code: orderDetail.code });
+            price += orderDetail.quantity * product.price;
+        } else {
+            nonExistentCode = true;
+            break;
+        }
+    }
+
+    if (nonExistentCode) {
+        return {
+            resolved: false
+        }
+    }
+    return {
+        orderDetails: newOrderDetails,
+        price,
+        resolved: true
+    }
+}
+
 module.exports = {
-    authenticateToken
+    authenticateToken,
+    getProductsIdsAndPrice
 }

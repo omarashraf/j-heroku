@@ -1,4 +1,4 @@
-var { User, validate } = require('../models/user');
+var { User, validate } = require('../models/user.model');
 
 async function insertUser(req, res) {
     const { error } = validate(req.body);

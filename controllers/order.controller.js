@@ -1,6 +1,6 @@
-const { Order, validateOrder } = require('../models/order');
-const { User, validateUser } = require('../models/user');
-const { Product } = require('../models/product');
+const { Order, validateOrder } = require('../models/order.model');
+const { User, validateUser } = require('../models/user.model');
+var utils = require('../utils/helper_functions');
 
 const mongoose = require('mongoose');
 
@@ -83,7 +83,7 @@ async function insertOrder(req, res) {
         }
     }
 
-    let productDetails = await getProductsIdsAndPrice(req.body.orderDetails);
+    let productDetails = await utils.getProductsIdsAndPrice(req.body.orderDetails);
     if (productDetails.resolved) {
         let price = productDetails.price;
         let orderDetails = productDetails.orderDetails;
@@ -106,35 +106,6 @@ async function insertOrder(req, res) {
     }
 
     
-}
-
-async function getProductsIdsAndPrice(orderDetails) {
-    let newOrderDetails = [];
-    let nonExistentCode = false;
-    let price = 0;
-
-    for (let i = 0; i < orderDetails.length; i++) {
-        let orderDetail = orderDetails[i];
-        let product = await Product.findOne({ code: orderDetail.code });
-        if (product) {
-            newOrderDetails.push({ quantity: orderDetail.quantity, code: orderDetail.code });
-            price += orderDetail.quantity * product.price;
-        } else {
-            nonExistentCode = true;
-            break;
-        }
-    }
-
-    if (nonExistentCode) {
-        return {
-            resolved: false
-        }
-    }
-    return {
-        orderDetails: newOrderDetails,
-        price,
-        resolved: true
-    }
 }
 
 function deleteOrder(req, res) {

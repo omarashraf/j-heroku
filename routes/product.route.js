@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-var productCtrl = require('../controllers/product');
+var productCtrl = require('../controllers/product.controller');
 
 var utils = require('../utils/helper_functions');
 

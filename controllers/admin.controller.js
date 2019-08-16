@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
-var { Admin, validate } = require('../models/admin');
+var { Admin, validate } = require('../models/admin.model');
 
 async function insertAdmin(req, res) {
     const { error } = validate(req.body);

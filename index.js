@@ -7,11 +7,11 @@ const env = dotenv.config();
 
 const dbConfig = require('./db/config');
 
-const adminRoutes = require('./routes/admin');
-const authRoutes = require('./routes/auth');
-const orderRoutes = require('./routes/order');
-const productRoutes = require('./routes/product');
-const userRoutes = require('./routes/user');
+const adminRoutes = require('./routes/admin.route');
+const authRoutes = require('./routes/auth.route');
+const orderRoutes = require('./routes/order.route');
+const productRoutes = require('./routes/product.route');
+const userRoutes = require('./routes/user.route');
 
 app.use(cors());
 app.use(bodyParser.json());

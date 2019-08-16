@@ -4,7 +4,7 @@ const dotenv = require('dotenv');
 const env = dotenv.config();
 const jwt = require('jsonwebtoken');
 
-const { Admin } = require('../models/admin');
+const { Admin } = require('../models/admin.model');
 
 async function authAdmin(req, res) {
 
