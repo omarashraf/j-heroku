@@ -1,6 +1,8 @@
 const dotenv = require('dotenv');
 const env = dotenv.config();
 const jwt = require('jsonwebtoken');
+const { Product } = require('../models/product.model');
+
 
 function authenticateToken(req, res, next) {
     var token = req.body.token || req.headers['x-access-token'];
