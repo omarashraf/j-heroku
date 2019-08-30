@@ -41,7 +41,30 @@ async function insertProduct(req, res) {
     }
 }
 
+function deleteProduct(req, res) {
+    let productId = req.params.id;
+    if (productId) {
+        Product.findByIdAndRemove(productId, function(err) {
+            if (err) {
+                res.status(500).send({
+                    msg: err.message
+                });
+            } else {
+                res.status(200).send({
+                    msg: 'product deleted successfully',
+                    productId
+                })
+            }
+        })
+    } else {
+        res.status(400).send({
+            msg: 'no product id is supplied'
+        });
+    }
+}
+
 module.exports = {
     insertProduct,
-    getAllProducts
+    getAllProducts,
+    deleteProduct
 }

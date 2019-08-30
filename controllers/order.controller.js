@@ -137,7 +137,7 @@ async function editOrder(req, res) {
     }
 
     let newOrder;
-    let productDetails = await getProductsIdsAndPrice(req.body.orderDetails);
+    let productDetails = await utils.getProductsIdsAndPrice(req.body.orderDetails);
     if (productDetails.resolved) {
         let price = productDetails.price;
 

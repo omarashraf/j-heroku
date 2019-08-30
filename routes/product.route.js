@@ -18,7 +18,7 @@ router.route('').get(productCtrl.getAllProducts);
 router.route('').post(productCtrl.insertProduct);
 
 // delete an existing product
-// router.route('').delete();
+router.route('/:id').delete(productCtrl.deleteProduct);
 
 // edit an exisitng product
 // router.route('').patch();
