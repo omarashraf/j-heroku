@@ -1,7 +1,7 @@
-var { User, validate } = require('../models/user.model');
+var { User, validateUser } = require('../models/user.model');
 
 async function insertUser(req, res) {
-    const { error } = validate(req.body);
+    const { error } = validateUser(req.body);
     if (error) {
         return res.status(400).send(error['details'][0]['message']);
     }
@@ -69,8 +69,31 @@ async function getAllUsers(req, res) {
     }
 }
 
+function deleteUser(req, res) {
+    let userId = req.params.id;
+    if (userId) {
+        User.findByIdAndRemove(userId, function(err) {
+            if (err) {
+                res.status(500).send({
+                    msg: err.message
+                });
+            } else {
+                res.status(200).send({
+                    msg: 'user deleted successfully',
+                    userId
+                })
+            }
+        })
+    } else {
+        res.status(400).send({
+            msg: 'no user id is supplied'
+        });
+    }
+}
+
 module.exports = {
     insertUser,
     getUser,
-    getAllUsers
+    getAllUsers,
+    deleteUser
 }

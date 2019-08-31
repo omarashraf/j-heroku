@@ -18,7 +18,7 @@ router.route('/:id?').get(userCtrl.getUser);
 router.route('').post(userCtrl.insertUser);
 
 // delete an existing user
-// router.route('').delete();
+router.route('/:id').delete(userCtrl.deleteUser);
 
 // edit an exisitng user
 // router.route('').patch();
