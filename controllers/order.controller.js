@@ -78,7 +78,7 @@ async function insertOrder(req, res) {
             userId = req.body.customerId;
         } else {
             return res.status(500).send({
-                msg: 'non-exitent user id supplied'
+                msg: 'no Instagram username is supplied'
             });
         }
     }
