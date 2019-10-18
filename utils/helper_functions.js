@@ -28,7 +28,6 @@ async function getProductsIdsAndPrice(orderDetails) {
     let newOrderDetails = [];
     let nonExistentCode = false;
     let price = 0;
-
     for (let i = 0; i < orderDetails.length; i++) {
         let orderDetail = orderDetails[i];
         let product = await Product.findOne({ code: orderDetail.code });
