@@ -30,5 +30,5 @@ app.get('/*', (req, res) => {
 });
 
 app.listen(process.env.PORT, function () {
-    console.log(`Example app listening on port ${env.parsed['PORT']}!`);
+    console.log(`Example app listening on port ${process.env.PORT}!`);
 });
