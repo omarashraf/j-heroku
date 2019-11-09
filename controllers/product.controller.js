@@ -1,4 +1,5 @@
-var { Product, validateProduct } = require('../models/product.model');
+const { Product, validateProduct } = require('../models/product.model');
+const { Order, validateOrder } = require('../models/order.model');
 
 async function getAllProducts(req, res) {
     let products = await Product.find();
@@ -44,18 +45,26 @@ async function insertProduct(req, res) {
 function deleteProduct(req, res) {
     let productId = req.params.id;
     if (productId) {
-        Product.findByIdAndRemove(productId, function(err) {
-            if (err) {
-                res.status(500).send({
-                    msg: err.message
+        Order.find({ orderDetails: { $elemMatch: { code: productId } } }, function(err, order) {
+            if (!order || order.length ===  0) {
+                Product.findOneAndRemove({ code: productId }, function(err) {
+                    if (err) {
+                        res.status(500).send({
+                            msg: err.message
+                        });
+                    } else {
+                        res.status(200).send({
+                            msg: 'product deleted successfully',
+                            productId
+                        })
+                    }
                 });
             } else {
-                res.status(200).send({
-                    msg: 'product deleted successfully',
-                    productId
-                })
+                res.status(403).send({
+                    msg: 'There is one or more order associated to that product'
+                });
             }
-        })
+        });
     } else {
         res.status(400).send({
             msg: 'no product id is supplied'

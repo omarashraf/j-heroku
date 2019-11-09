@@ -67,7 +67,7 @@ async function insertOrder(req, res) {
                 instagramUsername: user.instagramUsername,
                 email: user.email,
                 phone: user.phone,
-                address: user.address
+                address: user.address,
             });
             await userToInsert.save(function(err, user) {
                 userId = user.instagramUsername;
@@ -91,7 +91,8 @@ async function insertOrder(req, res) {
         let order = new Order({
             price,
             customerId: userId,
-            orderDetails
+            orderDetails,
+            deliveryDate: req.body.deliveryDate
         });
 
         await order.save();

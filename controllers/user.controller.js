@@ -1,4 +1,5 @@
 var { User, validateUser } = require('../models/user.model');
+const { Order, validateOrder } = require('../models/order.model');
 
 async function insertUser(req, res) {
     const { error } = validateUser(req.body);
@@ -72,18 +73,26 @@ async function getAllUsers(req, res) {
 function deleteUser(req, res) {
     let userId = req.params.id;
     if (userId) {
-        User.findByIdAndRemove(userId, function(err) {
-            if (err) {
-                res.status(500).send({
-                    msg: err.message
+        Order.findOne({ customerId: userId }, function(err, order) {
+            if(!order) {
+                User.findOneAndRemove({ instagramUsername: userId }, function(err) {
+                    if (err) {
+                        res.status(500).send({
+                            msg: err.message
+                        });
+                    } else {
+                        res.status(200).send({
+                            msg: 'user deleted successfully',
+                            userId
+                        })
+                    }
                 });
             } else {
-                res.status(200).send({
-                    msg: 'user deleted successfully',
-                    userId
-                })
+                res.status(403).send({
+                    msg: 'There is one or more order associated to that user'
+                });
             }
-        })
+        });
     } else {
         res.status(400).send({
             msg: 'no user id is supplied'
