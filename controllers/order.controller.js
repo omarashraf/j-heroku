@@ -143,6 +143,7 @@ async function editOrder(req, res) {
 
         newOrder = req.body;
         newOrder['price'] = price;
+        newOrder['deliveryDate'] = req.body.deliveryDate;
     } else {
         return res.status(400).send({
             msg: 'product details were not set properly'

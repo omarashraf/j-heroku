@@ -14,9 +14,12 @@ const orderDetailsSchema = mongoose.Schema({
 });
 
 const orderSchema = mongoose.Schema({
-    date: {
+    placingDate: {
         type: Date,
         default: Date.now
+    },
+    deliveryDate: {
+        type: Date
     },
     status: {
         type: String,
@@ -44,7 +47,8 @@ function validateOrder(order) {
         customerId: Joi.string(),
         user: Joi.object(),
         status: Joi.string().valid('pending', 'done'),
-        orderId: Joi.string()
+        orderId: Joi.string(),
+        deliveryDate: Joi.string().allow('').optional()
     }
     // return Joi.validate(order, schema) && validateOrderDetails(order.orderDetails);
     return Joi.validate(order, schema);
