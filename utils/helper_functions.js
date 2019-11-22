@@ -7,7 +7,7 @@ const { Product } = require('../models/product.model');
 function authenticateToken(req, res, next) {
     var token = req.body.token || req.headers['x-access-token'];
     if (token) {
-        jwt.verify(token, env.parsed['PRIVATE_KEY'], function(err, decoded) {
+        jwt.verify(token, process.env.PRIVATE_KEY, function(err, decoded) {
             if (err) {
                 return res.status(400).send({
                     msg: 'failed to authenticate token'

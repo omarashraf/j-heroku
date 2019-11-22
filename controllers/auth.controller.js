@@ -30,7 +30,7 @@ async function authAdmin(req, res) {
         });
     }
  
-    const token = jwt.sign({ _id: admin._id }, env.parsed['PRIVATE_KEY'], {
+    const token = jwt.sign({ _id: admin._id }, process.env.PRIVATE_KEY, {
         expiresIn: 60*60*24
     });
     res.send(token);
