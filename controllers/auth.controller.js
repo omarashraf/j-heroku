@@ -1,5 +1,5 @@
 const Joi = require('joi');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcrypt-nodejs');
 const dotenv = require('dotenv');
 const env = dotenv.config();
 const jwt = require('jsonwebtoken');
