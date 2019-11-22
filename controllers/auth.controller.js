@@ -1,5 +1,5 @@
 const Joi = require('joi');
-const bcrypt = require('bcrypt-nodejs');
+const bcrypt = require('bcryptjs');
 const dotenv = require('dotenv');
 const env = dotenv.config();
 const jwt = require('jsonwebtoken');
@@ -23,12 +23,14 @@ async function authAdmin(req, res) {
     }
  
     // validate credentials by comparing hashes of passwords
-    const validPassword = await bcrypt.compare(req.body.password, admin.password);
-    if (!validPassword) {
-        return res.status(400).send({
-            msg: 'Incorrect password'
-        });
-    }
+    // const validPassword = await 
+    bcrypt.compare(req.body.password, admin.password, function(err, result) {
+        if (!result || err) {
+            return res.status(400).send({
+                msg: 'Incorrect password'
+            });
+        }
+    });
  
     const token = jwt.sign({ _id: admin._id }, process.env.PRIVATE_KEY, {
         expiresIn: 60*60*24

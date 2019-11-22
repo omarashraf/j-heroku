@@ -1,4 +1,4 @@
-const bcrypt = require('bcrypt-nodejs');
+const bcrypt = require('bcryptjs');
 const saltRounds = 10;
 var { Admin, validate } = require('../models/admin.model');
 
