@@ -23,19 +23,18 @@ async function authAdmin(req, res) {
     }
  
     // validate credentials by comparing hashes of passwords
-    // const validPassword = await 
     bcrypt.compare(req.body.password, admin.password, function(err, result) {
         if (!result || err) {
-            return res.status(400).send({
+            res.status(400).send({
                 msg: 'Incorrect password'
             });
+        } else {
+            const token = jwt.sign({ _id: admin._id }, process.env.PRIVATE_KEY, {
+                expiresIn: 60*60*24
+            });
+            res.send(token);
         }
     });
- 
-    const token = jwt.sign({ _id: admin._id }, process.env.PRIVATE_KEY, {
-        expiresIn: 60*60*24
-    });
-    res.send(token);
 }
 
 function validate(admin) {
