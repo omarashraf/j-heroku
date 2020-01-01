@@ -46,7 +46,7 @@ const orderSchema = mongoose.Schema({
     }
 });
 
-// needs for inspection to see if it is going to be used or not
+// needs for inspection to see if it is going to be used or not and hence removed from front-end
 // function formulateOrderNumber(placingDate) {
 //     const dateSpliited = new Date(placingDate).toLocaleDateString().split('-');
 //     const timeSpliited = new Date(placingDate).toLocaleTimeString().split(' ')[0].split(":");
@@ -65,19 +65,7 @@ function validateOrder(order) {
         deliveryDate: Joi.string().allow('').optional(),
         dispatchingDate: Joi.string().allow('').optional(),
     }
-    // return Joi.validate(order, schema) && validateOrderDetails(order.orderDetails);
     return Joi.validate(order, schema);
-}
-
-function validateOrderDetails(orderDetails) {
-    let orderDetailSchema = Joi.object.keys({
-        quantity: Joi.number().required(),
-        code: Joi.required()
-    });
-
-    let orderDetailsSchema = Joi.array().items(orderDetailSchema);
-
-    return Joi.validate(orderDetails, orderDetailsSchema)
 }
 
 const Order = mongoose.model('Order', orderSchema);

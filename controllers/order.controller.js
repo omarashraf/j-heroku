@@ -2,8 +2,6 @@ const { Order, validateOrder } = require('../models/order.model');
 const { User, validateUser } = require('../models/user.model');
 var utils = require('../utils/helper_functions');
 
-const mongoose = require('mongoose');
-
 async function getAllOrders(req, res) {
     let orders = await Order.find();
     if (orders && orders.length > 0) {

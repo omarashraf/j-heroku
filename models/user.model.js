@@ -37,7 +37,7 @@ function validateUser(user) {
     const schmea = {
         name: Joi.string().required(),
         instagramUsername: Joi.string().required(),
-        email: Joi.string().required().trim().email({ minDomainAtoms: 2 }).lowercase({ force: true }),
+        email: Joi.string().required().trim().email({ minDomainAtoms: 2 }).lowercase({ force: true }).regex(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/),
         phone: Joi.string().required(),
         address: Joi.string().required()
     }
