@@ -19,12 +19,17 @@ const orderSchema = mongoose.Schema({
         default: Date.now
     },
     deliveryDate: {
-        type: Date
+        type: Date,
+        default: ''
+    },
+    dispatchingDate: {
+        type: Date,
+        default: ''
     },
     status: {
         type: String,
         required: true,
-        enum: ['done', 'pending'],
+        enum: ['done', 'pending', 'dispatched'],
         default: 'pending'
     },
     price: {
@@ -41,14 +46,24 @@ const orderSchema = mongoose.Schema({
     }
 });
 
+// needs for inspection to see if it is going to be used or not
+// function formulateOrderNumber(placingDate) {
+//     const dateSpliited = new Date(placingDate).toLocaleDateString().split('-');
+//     const timeSpliited = new Date(placingDate).toLocaleTimeString().split(' ')[0].split(":");
+//     let orderNumber = dateSpliited[1]  + dateSpliited[2] + "-" + dateSpliited[0] + "-" + timeSpliited[0] + timeSpliited[1] + timeSpliited[2];
+//     console.log(orderNumber);
+//     return orderNumber;
+// }
+    
 function validateOrder(order) {
     const schema = {
         orderDetails: Joi.required(),
         customerId: Joi.string(),
         user: Joi.object(),
-        status: Joi.string().valid('pending', 'done'),
+        status: Joi.string().valid('pending', 'done', 'dispatched'),
         orderId: Joi.string(),
-        deliveryDate: Joi.string().allow('').optional()
+        deliveryDate: Joi.string().allow('').optional(),
+        dispatchingDate: Joi.string().allow('').optional(),
     }
     // return Joi.validate(order, schema) && validateOrderDetails(order.orderDetails);
     return Joi.validate(order, schema);

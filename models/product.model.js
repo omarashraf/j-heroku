@@ -23,7 +23,7 @@ const productSchema = mongoose.Schema({
 function validateProduct(product) {
     const schmea = {
         name: Joi.string(),
-        code: Joi.string().required(),
+        code: Joi.string().required().regex(/^[A-Z][0-9].[0-9]+$/),
         price: Joi.number().required()
         // image: Joi.string().required(),
     }
