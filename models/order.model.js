@@ -43,6 +43,10 @@ const orderSchema = mongoose.Schema({
     customerId: {
         type: String,
         ref: 'User'
+    },
+    discountPercentage: {
+        type: String,
+        default: '0'
     }
 });
 
@@ -64,6 +68,7 @@ function validateOrder(order) {
         orderId: Joi.string(),
         deliveryDate: Joi.string().allow('').optional(),
         dispatchingDate: Joi.string().allow('').optional(),
+        discountPercentage: Joi.string().optional()
     }
     return Joi.validate(order, schema);
 }

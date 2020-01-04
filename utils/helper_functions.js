@@ -8,9 +8,13 @@ function authenticateToken(req, res, next) {
     var token = req.body.token || req.headers['x-access-token'];
     if (token) {
         jwt.verify(token, process.env.PRIVATE_KEY, function(err, decoded) {
-            if (err) {
-                return res.status(400).send({
-                    msg: 'failed to authenticate token'
+            if (decoded.exp * 1000 <= Date.now()) {
+                return res.status(401).send({
+                    msg: 'Token has expired'
+                });
+            } else if (err) {
+                return res.status(401).send({
+                    msg: 'Failed to authenticate token'
                 });
             } else {
                 req.decoded = decoded;
@@ -24,7 +28,7 @@ function authenticateToken(req, res, next) {
     }
 }
 
-async function getProductsIdsAndPrice(orderDetails) {
+async function getProductsIdsAndPrice(orderDetails, discountPercentage) {
     let newOrderDetails = [];
     let nonExistentCode = false;
     let price = 0;
@@ -47,7 +51,9 @@ async function getProductsIdsAndPrice(orderDetails) {
         }
     }
 
-    if (socksCount >= 6) {
+    if (discountPercentage != 0) {
+        price *= (1 - (discountPercentage / 100));
+    } else if (socksCount >= 6) {
         price *= 0.8;
     } else if (socksCount >= 4) {
         price *= 0.85;

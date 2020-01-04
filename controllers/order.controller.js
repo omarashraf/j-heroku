@@ -80,8 +80,7 @@ async function insertOrder(req, res) {
             });
         }
     }
-
-    let productDetails = await utils.getProductsIdsAndPrice(req.body.orderDetails);
+    let productDetails = await (req.body.discountPercentage? utils.getProductsIdsAndPrice(req.body.orderDetails, req.body.discountPercentage) : utils.getProductsIdsAndPrice(req.body.orderDetails, 0));
     if (productDetails.resolved) {
         let price = productDetails.price;
         let orderDetails = productDetails.orderDetails;
@@ -132,17 +131,20 @@ function deleteOrder(req, res) {
 async function editOrder(req, res) {
     const { error } = validateOrder(req.body);
     if (error) {
+        console.log(error);
         return res.status(400).send(error['details'][0]['message']);
     }
 
     let newOrder;
-    let productDetails = await utils.getProductsIdsAndPrice(req.body.orderDetails);
+    console.log(req.body.discountPercentage);
+    let productDetails = await (req.body.discountPercentage? utils.getProductsIdsAndPrice(req.body.orderDetails, req.body.discountPercentage) : utils.getProductsIdsAndPrice(req.body.orderDetails, 0));
     if (productDetails.resolved) {
         let price = productDetails.price;
 
         newOrder = req.body;
         newOrder['price'] = price;
         newOrder['deliveryDate'] = req.body.deliveryDate;
+        newOrder['discountPercentage'] = req.body.discountPercentage;
     } else {
         return res.status(400).send({
             msg: 'product details were not set properly'
