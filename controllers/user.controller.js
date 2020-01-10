@@ -4,6 +4,7 @@ const { Order, validateOrder } = require('../models/order.model');
 async function insertUser(req, res) {
     const { error } = validateUser(req.body);
     if (error) {
+        console.log(error);
         return res.status(400).send(error['details'][0]['message']);
     }
 

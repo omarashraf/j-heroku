@@ -25,7 +25,12 @@ const userSchema = mongoose.Schema({
   },
   phone: {
       type: String,
-      required: true
+      required: true,
+      validate: {
+        validator: function(v) {
+          return /^\+[0-9]{12,13}$/.test(v);
+        }
+      }
   },
   address: {
       type: String,
@@ -38,7 +43,7 @@ function validateUser(user) {
         name: Joi.string().required(),
         instagramUsername: Joi.string().required(),
         email: Joi.string().required().trim().email({ minDomainAtoms: 2 }).lowercase({ force: true }).regex(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/),
-        phone: Joi.string().required(),
+        phone: Joi.string().required().regex(/^\+[0-9]{12,13}$/),
         address: Joi.string().required()
     }
     return Joi.validate(user, schmea)

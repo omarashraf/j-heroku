@@ -51,8 +51,9 @@ async function getProductsIdsAndPrice(orderDetails, discountPercentage) {
         }
     }
 
+    let discount = Math.abs(discountPercentage) > 100? 100 : Math.abs(discountPercentage);
     if (discountPercentage != 0) {
-        price *= (1 - (discountPercentage / 100));
+        price *= (1 - (discount / 100));
     } else if (socksCount >= 6) {
         price *= 0.8;
     } else if (socksCount >= 4) {

@@ -10,6 +10,9 @@ router.use(utils.authenticateToken);
 // get all orders
 router.route('').get(orderCtrl.getAllOrders);
 
+// total revenue of all orders
+router.route('/revenue').get(orderCtrl.getRevenue);
+
 // get a specific order
 router.route('/:id').get(orderCtrl.getOrderById);
 

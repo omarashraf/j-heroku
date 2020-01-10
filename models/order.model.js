@@ -29,7 +29,7 @@ const orderSchema = mongoose.Schema({
     status: {
         type: String,
         required: true,
-        enum: ['done', 'pending', 'dispatched'],
+        enum: ['delivered', 'pending', 'dispatched'],
         default: 'pending'
     },
     price: {
@@ -64,7 +64,7 @@ function validateOrder(order) {
         orderDetails: Joi.required(),
         customerId: Joi.string(),
         user: Joi.object(),
-        status: Joi.string().valid('pending', 'done', 'dispatched'),
+        status: Joi.string().valid('pending', 'delivered', 'dispatched'),
         orderId: Joi.string(),
         deliveryDate: Joi.string().allow('').optional(),
         dispatchingDate: Joi.string().allow('').optional(),

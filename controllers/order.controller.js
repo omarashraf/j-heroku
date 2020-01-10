@@ -80,6 +80,7 @@ async function insertOrder(req, res) {
             });
         }
     }
+
     let productDetails = await (req.body.discountPercentage? utils.getProductsIdsAndPrice(req.body.orderDetails, req.body.discountPercentage) : utils.getProductsIdsAndPrice(req.body.orderDetails, 0));
     if (productDetails.resolved) {
         let price = productDetails.price;
@@ -89,7 +90,8 @@ async function insertOrder(req, res) {
             price,
             customerId: userId,
             orderDetails,
-            deliveryDate: req.body.deliveryDate
+            deliveryDate: req.body.deliveryDate,
+            discountPercentage: req.body.discountPercentage
         });
 
         await order.save();
@@ -131,12 +133,10 @@ function deleteOrder(req, res) {
 async function editOrder(req, res) {
     const { error } = validateOrder(req.body);
     if (error) {
-        console.log(error);
         return res.status(400).send(error['details'][0]['message']);
     }
 
     let newOrder;
-    console.log(req.body.discountPercentage);
     let productDetails = await (req.body.discountPercentage? utils.getProductsIdsAndPrice(req.body.orderDetails, req.body.discountPercentage) : utils.getProductsIdsAndPrice(req.body.orderDetails, 0));
     if (productDetails.resolved) {
         let price = productDetails.price;
@@ -165,10 +165,25 @@ async function editOrder(req, res) {
     });
 }
 
+async function getRevenue(req, res) {
+    const result = await Order.aggregate([
+        { $group: { _id: null, total: { $sum: '$price' } } }
+    ]);
+    if (result) {
+        res.status(200).send({
+            msg: 'orders revenues fetched',
+            result
+        });
+    } else {
+
+    }
+}
+
 module.exports = {
     getAllOrders,
     getOrderById,
     insertOrder,
     deleteOrder,
-    editOrder
+    editOrder,
+    getRevenue
 }
