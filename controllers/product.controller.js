@@ -32,7 +32,9 @@ async function insertProduct(req, res) {
         product = new Product({
             name: req.body.name,
             code: req.body.code,
-            price: req.body.price
+            price: req.body.price,
+            quantity: req.body.quantity,
+            availableToSell: req.body.quantity
         });
         await product.save();
         return res.status(200).send({

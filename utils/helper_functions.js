@@ -2,6 +2,8 @@ const dotenv = require('dotenv');
 const env = dotenv.config();
 const jwt = require('jsonwebtoken');
 const { Product } = require('../models/product.model');
+const { Order } = require('../models/order.model');
+const mongoose = require('mongoose');
 
 
 function authenticateToken(req, res, next) {
@@ -42,6 +44,8 @@ async function getProductsIdsAndPrice(orderDetails, discountPercentage) {
         let orderDetail = orderDetails[i];
         let product = await Product.findOne({ code: orderDetail.code });
         if (product) {
+            // console.log('AVAILABLE: ' + product.availableToSell);
+            // console.log('QUANTITY ORDERED: ' + orderDetail.quantity, ', CODE: ' + orderDetail.code);
             newOrderDetails.push({ quantity: orderDetail.quantity, code: orderDetail.code });
             price += orderDetail.quantity * product.price;
             socksCount += orderDetail.quantity;
@@ -74,7 +78,46 @@ async function getProductsIdsAndPrice(orderDetails, discountPercentage) {
     }
 }
 
+async function updateProductOnOrderInsert(orderDetails) {
+    for (let i = 0; i < orderDetails.length; i++) {
+        let orderDetail = orderDetails[i];
+        Product.findOneAndUpdate({ code: orderDetail.code }, { $inc: { 'availableToSell': (-1 * orderDetail.quantity) } }, { new: true }, function(err, product) {
+            if (err) {
+                return false;
+            }
+        });
+    }
+    return true;
+}
+
+async function updateProductOnOrderDelete(orderId) {
+    return Order.findOne({ _id: orderId }, async function(err, order) {
+        if (!err) {
+            if (order) {
+                for (let i = 0; i < order.orderDetails.length; i++) {
+                    let orderDetail = order.orderDetails[i];
+                    Product.findOneAndUpdate({ code: orderDetail.code }, { $inc: { 'availableToSell': orderDetail.quantity } }, { new: true }, function(err, product) {
+                        if (err) {
+                            return false;
+                        }
+                    });
+                }
+                return true;
+            }
+        } else {
+            return false;
+        }
+    });
+}
+
+async function updateProductOnOrderEdit() {
+    // TODO: needs change in edit logic first
+}
+
 module.exports = {
     authenticateToken,
-    getProductsIdsAndPrice
+    getProductsIdsAndPrice,
+    updateProductOnOrderInsert,
+    updateProductOnOrderDelete,
+    updateProductOnOrderEdit
 }

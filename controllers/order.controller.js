@@ -82,7 +82,7 @@ async function insertOrder(req, res) {
     }
 
     let productDetails = await (req.body.discountPercentage? utils.getProductsIdsAndPrice(req.body.orderDetails, req.body.discountPercentage) : utils.getProductsIdsAndPrice(req.body.orderDetails, 0));
-    if (productDetails.resolved) {
+    if (productDetails.resolved && utils.updateProductOnOrderInsert(req.body.orderDetails)) {
         let price = productDetails.price;
         let orderDetails = productDetails.orderDetails;
 
@@ -108,10 +108,11 @@ async function insertOrder(req, res) {
     
 }
 
-function deleteOrder(req, res) {
+async function deleteOrder(req, res) {
     let orderId = req.params.id;
-    if (orderId) {
-        Order.findByIdAndRemove(orderId, function(err) {
+    let updatedProduct = await utils.updateProductOnOrderDelete(orderId);
+    if (orderId && updatedProduct) {
+        Order.findByIdAndRemove(orderId, function(err, order) {
             if (err) {
                 res.status(500).send({
                     msg: err.message
