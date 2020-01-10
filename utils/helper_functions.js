@@ -44,8 +44,6 @@ async function getProductsIdsAndPrice(orderDetails, discountPercentage) {
         let orderDetail = orderDetails[i];
         let product = await Product.findOne({ code: orderDetail.code });
         if (product) {
-            // console.log('AVAILABLE: ' + product.availableToSell);
-            // console.log('QUANTITY ORDERED: ' + orderDetail.quantity, ', CODE: ' + orderDetail.code);
             newOrderDetails.push({ quantity: orderDetail.quantity, code: orderDetail.code });
             price += orderDetail.quantity * product.price;
             socksCount += orderDetail.quantity;
@@ -110,8 +108,18 @@ async function updateProductOnOrderDelete(orderId) {
     });
 }
 
-async function updateProductOnOrderEdit() {
-    // TODO: needs change in edit logic first
+async function updateProductOnOrderEdit(orderDetails, preOrderDetails) {
+    for (let i = 0; i < orderDetails.length; i++) {
+        let orderDetail = orderDetails[i];
+        let preOrderDetail = preOrderDetails[i];
+        let update = orderDetail.quantity - preOrderDetail.quantity;
+        Product.findOneAndUpdate({ code: orderDetail.code }, { $inc: { 'availableToSell': (-1 * update) } }, { new: true }, function(err, product) {
+            if (err) {
+                return false;
+            }
+        });
+    }
+    return true;
 }
 
 module.exports = {

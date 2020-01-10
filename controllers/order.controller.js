@@ -139,7 +139,8 @@ async function editOrder(req, res) {
 
     let newOrder;
     let productDetails = await (req.body.discountPercentage? utils.getProductsIdsAndPrice(req.body.orderDetails, req.body.discountPercentage) : utils.getProductsIdsAndPrice(req.body.orderDetails, 0));
-    if (productDetails.resolved) {
+    let updatedProduct = await utils.updateProductOnOrderEdit(req.body.orderDetails, req.body.preOrderDetails);
+    if (productDetails.resolved && updatedProduct) {
         let price = productDetails.price;
 
         newOrder = req.body;

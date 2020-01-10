@@ -68,7 +68,8 @@ function validateOrder(order) {
         orderId: Joi.string(),
         deliveryDate: Joi.string().allow('').optional(),
         dispatchingDate: Joi.string().allow('').optional(),
-        discountPercentage: Joi.string().optional()
+        discountPercentage: Joi.string().optional(),
+        preOrderDetails: Joi.optional()
     }
     return Joi.validate(order, schema);
 }
