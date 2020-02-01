@@ -8,7 +8,7 @@ async function insertAdmin(req, res) {
         return res.status(400).send(error['details'][0]['message']);
     }
 
-    let admin = await Admin.findOne({ username: req.body.username });
+    let admin = await Admin.findOne({ username: req.body.username.toLowerCase() });
     if (admin) {
         return res.status(409).send('Admin already exists')
     } else {
@@ -16,7 +16,7 @@ async function insertAdmin(req, res) {
             // insert admin in db
             admin = new Admin({
                 name: req.body.name,
-                username: req.body.username,
+                username: req.body.username.toLowerCase(),
                 password: hash
             });
             await admin.save();

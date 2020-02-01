@@ -15,7 +15,7 @@ async function authAdmin(req, res) {
     }
  
     //  find the admin by username
-    let admin = await Admin.findOne({ username: req.body.username });
+    let admin = await Admin.findOne({ username: req.body.username.toLowerCase() });
     if (!admin) {
         return res.status(400).send({
             msg: 'Incorrect username'

@@ -169,6 +169,7 @@ async function editOrder(req, res) {
 
 async function getRevenue(req, res) {
     const result = await Order.aggregate([
+        { $match: { 'status': 'delivered' } },
         { $group: { _id: null, total: { $sum: '$price' } } }
     ]);
     if (result) {
