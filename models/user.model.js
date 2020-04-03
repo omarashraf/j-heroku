@@ -44,7 +44,8 @@ function validateUser(user) {
         instagramUsername: Joi.string().required(),
         email: Joi.string().required().trim().email({ minDomainAtoms: 2 }).lowercase({ force: true }).regex(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/),
         phone: Joi.string().required().regex(/^\+[0-9]{12,13}$/),
-        address: Joi.string().required()
+        address: Joi.string().required(),
+        userId: Joi.string()
     }
     return Joi.validate(user, schmea)
 }

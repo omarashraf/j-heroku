@@ -74,8 +74,38 @@ function deleteProduct(req, res) {
     }
 }
 
+function editProduct(req, res) {
+    const { error } = validateProduct(req.body);
+    if (error) {
+        return res.status(400).send(error['details'][0]['message']);
+    }
+
+    const newProduct = {
+        name: req.body.name,
+        price: req.body.price,
+        quantity: req.body.quantity,
+        availableToSell: req.body.availableToSell,
+        code: req.body.code
+    }
+
+    Product.findOneAndUpdate({ code: req.body.code }, newProduct, { new: true }, function(err, product) {
+        if (!err) {
+            res.status(200).send({
+                msg: 'product updated successfully',
+                product
+            })
+        } else {
+            res.status(404).send({
+                msg: 'no such product with the supplied id'
+            });
+        }
+    });
+
+}
+
 module.exports = {
     insertProduct,
     getAllProducts,
-    deleteProduct
+    deleteProduct,
+    editProduct
 }

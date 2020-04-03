@@ -21,6 +21,6 @@ router.route('').post(userCtrl.insertUser);
 router.route('/:id').delete(userCtrl.deleteUser);
 
 // edit an exisitng user
-// router.route('').patch();
+router.route('').patch(userCtrl.editUser);
 
 module.exports = router;

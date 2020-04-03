@@ -21,6 +21,6 @@ router.route('').post(productCtrl.insertProduct);
 router.route('/:id').delete(productCtrl.deleteProduct);
 
 // edit an exisitng product
-// router.route('').patch();
+router.route('').patch(productCtrl.editProduct);
 
 module.exports = router;

@@ -142,7 +142,6 @@ async function editOrder(req, res) {
     let updatedProduct = await utils.updateProductOnOrderEdit(req.body.orderDetails, req.body.preOrderDetails);
     if (productDetails.resolved && updatedProduct) {
         let price = productDetails.price;
-
         newOrder = req.body;
         newOrder['price'] = price;
         newOrder['deliveryDate'] = req.body.deliveryDate;

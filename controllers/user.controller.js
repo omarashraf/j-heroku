@@ -101,9 +101,39 @@ function deleteUser(req, res) {
     }
 }
 
+function editUser(req, res) {
+    const { error } = validateUser(req.body);
+    if (error) {
+        return res.status(400).send(error['details'][0]['message']);
+    }
+
+    const newUser = {
+        name: req.body.name,
+        email: req.body.email,
+        instagramUsername: req.body.instagramUsername,
+        phone: req.body.phone,
+        address: req.body.address
+    }
+
+    User.findOneAndUpdate({ _id: req.body.userId }, newUser, { new: true }, function(err, user) {
+        if (!err) {
+            res.status(200).send({
+                msg: 'user updated successfully',
+                user
+            })
+        } else {
+            res.status(404).send({
+                msg: 'no such user with the supplied id'
+            });
+        }
+    });
+
+}
+
 module.exports = {
     insertUser,
     getUser,
     getAllUsers,
-    deleteUser
+    deleteUser,
+    editUser
 }
