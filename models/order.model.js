@@ -22,14 +22,10 @@ const orderSchema = mongoose.Schema({
         type: Date,
         default: ''
     },
-    dispatchingDate: {
-        type: Date,
-        default: ''
-    },
     status: {
         type: String,
         required: true,
-        enum: ['delivered', 'pending', 'dispatched'],
+        enum: ['delivered', 'pending'],
         default: 'pending'
     },
     price: {
@@ -64,10 +60,9 @@ function validateOrder(order) {
         orderDetails: Joi.required(),
         customerId: Joi.string(),
         user: Joi.object(),
-        status: Joi.string().valid('pending', 'delivered', 'dispatched'),
+        status: Joi.string().valid('pending', 'delivered'),
         orderId: Joi.string(),
         deliveryDate: Joi.string().allow('').optional(),
-        dispatchingDate: Joi.string().allow('').optional(),
         discountPercentage: Joi.string().optional(),
         preOrderDetails: Joi.optional()
     }

@@ -122,6 +122,8 @@ function editUser(req, res) {
                 user
             })
         } else {
+            console.log(err);
+            console.log(err.response);
             res.status(404).send({
                 msg: 'no such user with the supplied id'
             });
