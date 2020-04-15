@@ -43,6 +43,14 @@ const orderSchema = mongoose.Schema({
     discountPercentage: {
         type: String,
         default: '0'
+    },
+    surveySent: {
+        type: Boolean,
+        default: false
+    },
+    surveyResponse: {
+        type: Boolean,
+        default: false
     }
 });
 
@@ -64,7 +72,9 @@ function validateOrder(order) {
         orderId: Joi.string(),
         deliveryDate: Joi.string().allow('').optional(),
         discountPercentage: Joi.string().optional(),
-        preOrderDetails: Joi.optional()
+        preOrderDetails: Joi.optional(),
+        surveySent: Joi.optional(),
+        surveyResponse: Joi.optional()
     }
     return Joi.validate(order, schema);
 }
