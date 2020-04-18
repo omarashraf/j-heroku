@@ -57,17 +57,31 @@ async function getUser(req, res) {
 }
 
 async function getAllUsers(req, res) {
-    let users = await User.find();
-    if (users && users.length > 0) {
-        res.status(200).send({
-            msg: 'users fetched successfully',
-            users
-        });
+    if (req.query.meta === 'true') {
+        let count = await User.countDocuments();
+        if (count) {
+            res.status(200).send({
+                msg: 'users count fetched successfully',
+                count
+            });
+        } else {
+            res.status(500).send({
+                msg: 'could not fetch counter',
+            });
+        }
     } else {
-        res.status(200).send({
-            msg: 'there are no users to be fetched',
-            users
-        });
+        let users = await User.find();
+        if (users && users.length > 0) {
+            res.status(200).send({
+                msg: 'users fetched successfully',
+                users
+            });
+        } else {
+            res.status(200).send({
+                msg: 'there are no users to be fetched',
+                users
+            });
+        }
     }
 }
 

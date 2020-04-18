@@ -1,18 +1,30 @@
 const { Product, validateProduct } = require('../models/product.model');
-const { Order, validateOrder } = require('../models/order.model');
+const { Order } = require('../models/order.model');
 
 async function getAllProducts(req, res) {
     let products = await Product.find();
-    if (products && products.length > 0) {
+    if (req.query.meta === 'true') {
+        let productsCount = products.map(product => ({
+            name: product.name,
+            code: product.code,
+            count: Number(product['quantity']) - Number(product['availableToSell'])
+        }));
         res.status(200).send({
-            msg: 'products fetched successfully',
-            products
+            msg: 'products count fetched successfully',
+            productsCount
         });
     } else {
-        res.status(200).send({
-            msg: 'there are no products to be fetched',
-            products
-        });
+        if (products && products.length > 0) {
+            res.status(200).send({
+                msg: 'products fetched successfully',
+                products
+            });
+        } else {
+            res.status(200).send({
+                msg: 'there are no products to be fetched',
+                products
+            });
+        }
     }
 }
 

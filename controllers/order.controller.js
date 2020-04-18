@@ -3,17 +3,31 @@ const { User, validateUser } = require('../models/user.model');
 var utils = require('../utils/helper_functions');
 
 async function getAllOrders(req, res) {
-    let orders = await Order.find();
-    if (orders && orders.length > 0) {
-        res.status(200).send({
-            msg: 'orders fetched successfully',
-            orders
-        });
+    if (req.query.meta === 'true') {
+        let count = await Order.countDocuments();
+        if (count) {
+            res.status(200).send({
+                msg: 'orders count fetched successfully',
+                count
+            });
+        } else {
+            res.status(500).send({
+                msg: 'could not fetch counter',
+            });
+        }
     } else {
-        res.status(200).send({
-            msg: 'there are no orders to be fetched',
-            orders
-        });
+        let orders = await Order.find();
+        if (orders && orders.length > 0) {
+            res.status(200).send({
+                msg: 'orders fetched successfully',
+                orders
+            });
+        } else {
+            res.status(200).send({
+                msg: 'there are no orders to be fetched',
+                orders
+            });
+        }
     }
 }
 
@@ -133,9 +147,7 @@ async function deleteOrder(req, res) {
 
 async function editOrder(req, res) {
     const { error } = validateOrder(req.body);
-    console.log(req.body);
     if (error) {
-        console.log(error);
         return res.status(400).send(error['details'][0]['message']);
     }
 
@@ -144,7 +156,6 @@ async function editOrder(req, res) {
     let updatedProduct = await utils.updateProductOnOrderEdit(req.body.orderDetails, req.body.preOrderDetails);
     if (productDetails.resolved && updatedProduct) {
         let price = productDetails.price;
-        console.log(req.body);
         newOrder = req.body;
         newOrder['price'] = price;
         newOrder['deliveryDate'] = req.body.deliveryDate;
