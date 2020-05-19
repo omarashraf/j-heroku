@@ -1,0 +1,51 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='utf-8')
+    link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css')
+  body(style='color: black;')
+    div(style="background-image: url('https://i.ibb.co/W68Fq1t/jawareb-receipt.png'); height: 700px; width: 600px; background-size: cover;")
+      .header
+        div(style='padding: 50px 15px 10px; font-weight: bold; font-size: 25px; float: left;')
+          | Receipt
+        div(style='padding: 50px 15px; font-weight: bold; font-size: 25px; float: right;')
+          img(src='https://i.ibb.co/ssw4ZJ4/Logo-Transparent.png', height='65', width='100')
+        div(style='clear: both;')
+      div
+        div(style='padding: 0px 15px; font-weight: bold; font-size: 25px; text-align: center; width: 100%;')
+          | Hello #{name}
+      div(style='position: relative; height: 775px;')
+        .body
+          table(style='font-size: 22px; width: 100%; padding: 20px 10px; color: black;', cellspacing='0')
+            tbody
+              tr.border-bottom
+                th(style='padding: 20px 10px; border-bottom: 1px solid black; text-align: center;') Item
+                th(style='padding: 20px 10px; border-bottom: 1px solid black; text-align: center;') Code
+                th(style='padding: 20px 10px; border-bottom: 1px solid black; text-align: center;') Quantity
+                th(style='padding: 20px 10px; border-bottom: 1px solid black; text-align: center;') Price
+              - for (let i = 0; i < orderDetails.length; ++i) {
+                tr.border-bottom(style='font-size: 18px')
+                  td(style='padding: 20px 10px; border-bottom: 1px solid black; text-align: center;')= orderDetails[i].name
+                  td(style='padding: 20px 10px; border-bottom: 1px solid black; text-align: center;')= orderDetails[i].code
+                  td(style='padding: 20px 10px; border-bottom: 1px solid black; text-align: center;')= orderDetails[i].quantity
+                  td(style='padding: 20px 10px; border-bottom: 1px solid black; text-align: center;')= price / totalCount
+              - }
+        div(style='bottom: 0; right: 0; position: absolute; margin-bottom: 20px; color: black;')
+          div(style='float: left;')
+          div(style='float: right;')
+            table(cellspacing='0')
+              tbody
+                tr.border-bottom(style='text-align: left; font-size: 18px;')
+                  td(style='font-weight: bold; padding: 20px 10px; border-bottom: 1px solid black; text-align: center;') Delivery Fees
+                  td(style='padding: 20px 10px; border-bottom: 1px solid black; text-align: center;') #{deliveryFees}
+                tr.border-bottom(style='text-align: left; font-size: 18px;')
+                  td(style='font-weight: bold; padding: 20px 10px; border-bottom: 1px solid black; text-align: center;') Total
+                  td(style='padding: 20px 10px; border-bottom: 1px solid black; text-align: center;') #{price + deliveryFees}
+          div(style='clear: both;')
+    div(style='margin-top: 160px; color: #999; width: 600px;')
+      hr
+      .left-footer(style='font-size: 16px; float: left; width: 45%; padding: 10px 15px; text-align: left;')
+        | the.jawareb@gmail.com
+      .right-footer(style='font-size: 16px; float: left; width: 45%; padding: 10px 15px; text-align: right;')
+        | Cairo, Egypt
+      div(style='clear: both;')

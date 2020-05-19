@@ -13,6 +13,7 @@ const authRoutes = require('./routes/auth.route');
 const orderRoutes = require('./routes/order.route');
 const productRoutes = require('./routes/product.route');
 const userRoutes = require('./routes/user.route');
+const emailRoutes = require('./routes/email.route');
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -22,6 +23,7 @@ app.use('/auth', authRoutes);
 app.use('/order', orderRoutes);
 app.use('/product', productRoutes);
 app.use('/user', userRoutes);
+app.use('/email', emailRoutes);
 
 app.use(express.static(path.join(__dirname, 'build')));
 
