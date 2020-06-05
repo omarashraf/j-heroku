@@ -30,11 +30,16 @@ const userSchema = mongoose.Schema({
         validator: function(v) {
           return /^\+[0-9]{12,13}$/.test(v);
         }
-      }
+      } 
   },
   address: {
       type: String,
       required: true
+  },
+  type: {
+    type: String,
+    enum: ['potential', 'important', 'friend', ''],
+    default: ''
   }
 });
 
@@ -45,7 +50,8 @@ function validateUser(user) {
         email: Joi.string().required().trim().email({ minDomainAtoms: 2 }).lowercase({ force: true }).regex(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/),
         phone: Joi.string().required().regex(/^\+[0-9]{12,13}$/),
         address: Joi.string().required(),
-        userId: Joi.string()
+        userId: Joi.string(),
+        type: Joi.optional()
     }
     return Joi.validate(user, schmea)
 }

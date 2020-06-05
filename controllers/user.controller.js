@@ -1,5 +1,5 @@
 var { User, validateUser } = require('../models/user.model');
-const { Order, validateOrder } = require('../models/order.model');
+const { Order } = require('../models/order.model');
 
 async function insertUser(req, res) {
     const { error } = validateUser(req.body);
@@ -21,7 +21,8 @@ async function insertUser(req, res) {
             instagramUsername: req.body.instagramUsername,
             email: req.body.email,
             phone: req.body.phone,
-            address: req.body.address
+            address: req.body.address,
+            type: req.body.type
         });
         await user.save();
         return res.status(200).send({
@@ -126,7 +127,8 @@ function editUser(req, res) {
         email: req.body.email,
         instagramUsername: req.body.instagramUsername,
         phone: req.body.phone,
-        address: req.body.address
+        address: req.body.address,
+        type: req.body.type
     }
 
     User.findOneAndUpdate({ _id: req.body.userId }, newUser, { new: true }, function(err, user) {
@@ -136,8 +138,6 @@ function editUser(req, res) {
                 user
             })
         } else {
-            console.log(err);
-            console.log(err.response);
             res.status(404).send({
                 msg: 'no such user with the supplied id'
             });

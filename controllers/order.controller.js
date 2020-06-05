@@ -79,7 +79,7 @@ async function insertOrder(req, res) {
                 instagramUsername: user.instagramUsername,
                 email: user.email,
                 phone: user.phone,
-                address: user.address,
+                address: user.address
             });
             await userToInsert.save(function(err, user) {
                 userId = user.instagramUsername;
@@ -105,7 +105,9 @@ async function insertOrder(req, res) {
             customerId: userId,
             orderDetails,
             deliveryDate: req.body.deliveryDate,
-            discountPercentage: req.body.discountPercentage
+            discountPercentage: req.body.discountPercentage,
+            type: req.body.type,
+            special: req.body.special
         });
 
         await order.save();
@@ -160,6 +162,8 @@ async function editOrder(req, res) {
         newOrder['price'] = price;
         newOrder['deliveryDate'] = req.body.deliveryDate;
         newOrder['discountPercentage'] = req.body.discountPercentage;
+        newOrder['type'] = req.body.type;
+        newOrder['special'] = req.body.special;
     } else {
         return res.status(400).send({
             msg: 'product details were not set properly'

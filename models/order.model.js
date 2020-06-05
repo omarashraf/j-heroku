@@ -51,6 +51,15 @@ const orderSchema = mongoose.Schema({
     surveyResponse: {
         type: Boolean,
         default: false
+    },
+    type: {
+      type: String,
+      enum: ['voo', ''],
+      default: ''
+    },
+    special: {
+        type: Boolean,
+        default: false
     }
 });
 
@@ -74,7 +83,9 @@ function validateOrder(order) {
         discountPercentage: Joi.string().optional(),
         preOrderDetails: Joi.optional(),
         surveySent: Joi.optional(),
-        surveyResponse: Joi.optional()
+        surveyResponse: Joi.optional(),
+        type: Joi.optional(),
+        special: Joi.optional()
     }
     return Joi.validate(order, schema);
 }
