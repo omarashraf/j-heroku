@@ -195,7 +195,54 @@ async function getRevenue(req, res) {
             result
         });
     } else {
+        res.status(500).send({
+            msg: 'could not fetch results'
+        });
+    }
+}
 
+async function getRankings(req, res) {
+    const type = req.query.type;
+    let rankings = [];
+    if (type === 'orders') {
+        rankings = await Order.aggregate([
+            { $match: { 'status': 'delivered' } },
+            {
+                $group: {
+                    _id: {
+                        customerId: '$customerId'
+                    },
+                    count: { $sum: 1 }
+                }
+            },
+            { $sort: { count: -1 } },
+            { $limit: 10 }
+        ]);
+    } else {
+        rankings = await Order.aggregate([
+            { $unwind: '$orderDetails' },
+            { $match: { 'status': 'delivered' } },
+            {
+                $group: {
+                    _id: {
+                        customerId: '$customerId'
+                    },
+                    count: { $sum: '$orderDetails.quantity' }
+                }
+            },
+            { $sort: { count: -1 } },
+            { $limit: 10 }
+        ]);
+    }
+    if (rankings) {
+        res.status(200).send({
+            msg: 'rankings according to number of orders per user',
+            rankings
+        });
+    } else {
+        res.status(500).send({
+            msg: 'could not fetch rankings'
+        });
     }
 }
 
@@ -205,5 +252,6 @@ module.exports = {
     insertOrder,
     deleteOrder,
     editOrder,
-    getRevenue
+    getRevenue,
+    getRankings
 }

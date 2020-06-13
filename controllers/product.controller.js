@@ -1,5 +1,7 @@
 const { Product, validateProduct } = require('../models/product.model');
 const { Order } = require('../models/order.model');
+const { unlink } = require('fs');
+const DIR = '/products/';
 
 async function getAllProducts(req, res) {
     let products = await Product.find();
@@ -48,6 +50,7 @@ async function insertProduct(req, res) {
             quantity: req.body.quantity,
             availableToSell: req.body.quantity
         });
+        product.imageName = req.file && req.file.filename ? DIR + req.file.filename : '';
         await product.save();
         return res.status(200).send({
             msg: 'product inserted successfully',
@@ -59,20 +62,32 @@ async function insertProduct(req, res) {
 function deleteProduct(req, res) {
     let productId = req.params.id;
     if (productId) {
-        Order.find({ orderDetails: { $elemMatch: { code: productId } } }, function(err, order) {
+        Order.find({ orderDetails: { $elemMatch: { code: productId } } }, async function(err, order) {
             if (!order || order.length ===  0) {
-                Product.findOneAndRemove({ code: productId }, function(err) {
-                    if (err) {
-                        res.status(500).send({
-                            msg: err.message
+                let productFetched = await Product.findOne({ code: productId });
+                if (productFetched.imageName || productFetched.imageName !== '') {
+                    const urlSuffix = productFetched.imageName.split(':')[productFetched.imageName.split(':').length - 1];
+                    const urlPath = urlSuffix.split('/').filter((element, index) => index != 0).join('/');
+                    unlink('images/' + urlPath, (err) => {
+                        if (err) {
+                            return res.status(500).send({
+                                msg: 'could not delete attached image'
+                            });
+                        }
+                        Product.findOneAndRemove({ code: productId }, function(err) {
+                            if (err) {
+                                res.status(500).send({
+                                    msg: err.message
+                                });
+                            } else {
+                                res.status(200).send({
+                                    msg: 'product deleted successfully',
+                                    productId
+                                });
+                            }
                         });
-                    } else {
-                        res.status(200).send({
-                            msg: 'product deleted successfully',
-                            productId
-                        })
-                    }
-                });
+                    });
+                }
             } else {
                 res.status(403).send({
                     msg: 'There is one or more order associated to that product'

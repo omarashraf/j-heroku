@@ -15,7 +15,7 @@ const productSchema = mongoose.Schema({
             }
         }
     },
-    image: {
+    imageName: {
         type: String
     },
     price: {
@@ -37,8 +37,8 @@ function validateProduct(product) {
         code: Joi.string().required().regex(/^[A-Z][0-9]\.[0-9]+$/),
         price: Joi.number().required(),
         quantity: Joi.number().required(),
-        availableToSell: Joi.number()
-        // image: Joi.string().required(),
+        availableToSell: Joi.number(),
+        imageName: Joi.optional(),
     }
     return Joi.validate(product, schmea)
 }

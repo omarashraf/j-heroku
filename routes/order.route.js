@@ -13,6 +13,9 @@ router.route('').get(orderCtrl.getAllOrders);
 // total revenue of all orders
 router.route('/revenue').get(orderCtrl.getRevenue);
 
+// get rankings of users with number of orders
+router.route('/rankings').get(orderCtrl.getRankings);
+
 // get a specific order
 router.route('/:id').get(orderCtrl.getOrderById);
 
