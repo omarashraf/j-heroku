@@ -87,6 +87,19 @@ function deleteProduct(req, res) {
                             }
                         });
                     });
+                } else {
+                    Product.findOneAndRemove({ code: productId }, function(err) {
+                        if (err) {
+                            res.status(500).send({
+                                msg: err.message
+                            });
+                        } else {
+                            res.status(200).send({
+                                msg: 'product deleted successfully',
+                                productId
+                            });
+                        }
+                    });
                 }
             } else {
                 res.status(403).send({
