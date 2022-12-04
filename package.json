@@ -32,7 +32,7 @@
     "cors": "^2.8.5",
     "create-error-class": "^3.0.2",
     "crypto-random-string": "^1.0.0",
-    "decode-uri-component": "^0.2.0",
+    "decode-uri-component": "^0.2.1",
     "deep-extend": "^0.6.0",
     "dotenv": "^6.2.0",
     "duplexer3": "^0.1.4",
